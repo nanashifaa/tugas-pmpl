@@ -16,14 +16,13 @@ class LoginController extends Controller
             'email'=>'required|email',
             'password'=>'required'
         ]);
-
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-            return redirect()->intended('/dashboard');
-        }
-
-        return back()->withErrors(['email'=>'Login gagal']);
+         if(Auth::attempt($credentials)){
+        $request->session()->regenerate();
+        return redirect()->intended('/dashboard');
     }
+
+    return back()->withErrors(['email'=>'Login gagal']);
+}
 
     public function logout(Request $request){
         Auth::logout();
