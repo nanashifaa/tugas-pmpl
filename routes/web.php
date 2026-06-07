@@ -16,7 +16,7 @@ Route::post('/login',[LoginController::class,'login']);
 Route::post('/logout',[LoginController::class,'logout'])->name('logout');
 
 // Dashboard
-Route::get('/dashboard',[DashboardController::class,'index'])->middleware('auth');
+Route::get('/dashboard',[DashboardController::class,'index'])->middleware('auth')->name('dashboard');
 
 // Penelitian CRUD
 Route::get('/penelitian', [PenelitianController::class, 'index'])->name('penelitian.index')->middleware('auth');

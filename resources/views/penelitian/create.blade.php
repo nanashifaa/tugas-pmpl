@@ -112,6 +112,13 @@
 </style>
 
 <div class="form-wrapper">
+    {{-- TAMBAHAN: tombol back ke dashboard --}}
+    <div style="max-width: 800px; margin: 0 auto 1rem;">
+        <a href="/dashboard" style="font-size: 0.875rem; font-weight: 600; color: #9B2235; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+            &#8592; Kembali ke Dashboard
+        </a>
+    </div> 
+
     <div class="form-container">
         <div class="form-header">
             <h2>Form Tambah Data Penelitian</h2>
