@@ -348,7 +348,9 @@
         <div class="content-section">
             <div class="section-header">
                 <span class="section-title">Penelitian Terbaru</span>
-                <a href="{{ route('penelitian.create') }}" class="btn-maroon">+ Tambah</a>
+                @if(auth()->user()->role === 'dosen')
+                    <a href="{{ route('penelitian.create') }}" class="btn-maroon">+ Tambah</a>
+                @endif
             </div>
 
             @forelse($recent as $p)
@@ -360,16 +362,17 @@
                 <div style="display: flex; align-items: center; gap: 0.5rem; margin-left: 1rem; flex-shrink: 0;">
                     <span class="research-status {{ strtolower($p->status) }}">{{ $p->status }}</span>
 
-                    {{-- Tombol Edit --}}
-                    <a href="{{ route('penelitian.edit', $p->id_penelitian) }}" class="btn-action edit">Edit</a>
+                    @if(auth()->user()->role === 'dosen')
+                        {{-- Tombol Edit --}}
+                        <a href="{{ route('penelitian.edit', $p->id_penelitian) }}" class="btn-action edit">Edit</a>
 
-                    {{-- Tombol Delete --}}
-                    <form action="{{ route('penelitian.destroy', $p->id_penelitian) }}" method="POST"
-                        onsubmit="return confirm('Hapus penelitian ini?')" style="margin: 0;">
+                         {{-- Tombol Delete --}}
+                        <form action="{{ route('penelitian.destroy', $p->id_penelitian) }}" method="POST" onsubmit="return confirm('Hapus penelitian ini?')" style="margin: 0;">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn-action delete">Delete</button>
-                    </form>
+                        </form>
+                        @endif
                 </div>
             </div>
             @empty
