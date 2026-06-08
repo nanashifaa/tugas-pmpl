@@ -124,8 +124,8 @@
         height: 100%;
         border-radius: 12px 0 0 12px;
     }
-    .stat-card.total::before { background: #9B2235; }
-    .stat-card.aktif::before  { background: #1D9E75; }
+    .stat-card.total::before   { background: #9B2235; }
+    .stat-card.aktif::before   { background: #1D9E75; }
     .stat-card.selesai::before { background: #378ADD; }
 
     .stat-icon {
@@ -239,13 +239,12 @@
         font-weight: 600;
         color: #555;
         white-space: nowrap;
-        margin-left: 1rem;
         flex-shrink: 0;
     }
     .research-status.aktif   { background: #e1f5ee; color: #0F6E56; }
     .research-status.selesai { background: #e6f1fb; color: #185FA5; }
 
-    /* ── Button ── */
+    /* ── Buttons ── */
     .btn-maroon {
         background-color: #9B2235;
         color: #ffffff;
@@ -268,10 +267,28 @@
     }
     .btn-maroon:active { transform: scale(0.98); }
 
+    .btn-action {
+        height: 30px;
+        padding: 0 0.75rem;
+        border-radius: 7px;
+        border: 1px solid #eee;
+        background: #fff;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.78rem;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background 0.15s, border-color 0.15s;
+    }
+    .btn-action.edit   { color: #b07d00; }
+    .btn-action.delete { color: #c0392b; }
+    .btn-action.edit:hover   { background: #fff8e1; border-color: #f0c040; }
+    .btn-action.delete:hover { background: #fdecea; border-color: #e57373; }
+
     @media (max-width: 768px) {
-        .stats-grid { grid-template-columns: 1fr; }
-        .bottom-grid { grid-template-columns: 1fr; }
-        .shortcut-grid { grid-template-columns: 1fr; }
+        .stats-grid    { grid-template-columns: 1fr; }
         .welcome-badge { display: none; }
     }
 </style>
@@ -327,32 +344,45 @@
             </div>
         </div>
 
-            {{-- Penelitian Terbaru --}}
-            <div class="content-section">
-                <div class="section-header">
-                    <span class="section-title">Penelitian Terbaru</span>
-                    <a href="{{ route('penelitian.create') }}" class="btn-maroon">+ Tambah</a>
-                </div>
+        {{-- Penelitian Terbaru --}}
+        <div class="content-section">
+            <div class="section-header">
+                <span class="section-title">Penelitian Terbaru</span>
+                <a href="{{ route('penelitian.create') }}" class="btn-maroon">+ Tambah</a>
+            </div>
 
-                @forelse($recent as $p)
-                <div class="research-item">
-                    <div>
-                        <div class="research-title">{{ $p->judul }}</div>
-                        <div class="research-meta">{{ $p->anggota }} &bull; {{ $p->tahun }}</div>
-                    </div>
+            @forelse($recent as $p)
+            <div class="research-item">
+                <div style="flex: 1; min-width: 0;">
+                    <div class="research-title">{{ $p->judul }}</div>
+                    <div class="research-meta">{{ $p->anggota }} &bull; {{ $p->tahun }}</div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 0.5rem; margin-left: 1rem; flex-shrink: 0;">
                     <span class="research-status {{ strtolower($p->status) }}">{{ $p->status }}</span>
+
+                    {{-- Tombol Edit --}}
+                    <a href="{{ route('penelitian.edit', $p->id_penelitian) }}" class="btn-action edit">Edit</a>
+
+                    {{-- Tombol Delete --}}
+                    <form action="{{ route('penelitian.destroy', $p->id_penelitian) }}" method="POST"
+                        onsubmit="return confirm('Hapus penelitian ini?')" style="margin: 0;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn-action delete">Delete</button>
+                    </form>
                 </div>
-                @empty
-                <div class="empty-state">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-3-3v6M4.5 19.5l15-15M19.5 4.5l-15 15"/>
-                        <rect x="3" y="3" width="18" height="18" rx="3"/>
-                    </svg>
-                    <p>Belum ada data penelitian</p>
-                    <small>Klik "Tambah" untuk memulai</small>
-                </div>
-                @endforelse
- 
+            </div>
+            @empty
+            <div class="empty-state">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-3-3v6M4.5 19.5l15-15M19.5 4.5l-15 15"/>
+                    <rect x="3" y="3" width="18" height="18" rx="3"/>
+                </svg>
+                <p>Belum ada data penelitian</p>
+                <small>Klik "Tambah" untuk memulai</small>
+            </div>
+            @endforelse
+
         </div>
 
     </div>

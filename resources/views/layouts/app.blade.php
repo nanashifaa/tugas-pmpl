@@ -119,5 +119,12 @@
     <div class="container">
         @yield('content')
     </div>
+    @if(session('success'))
+<div style="background:#e1f5ee; color:#0F6E56; border:1px solid #b2dfdb;
+            padding:0.75rem 1.25rem; border-radius:8px; margin:1rem auto;
+            max-width:1100px; font-size:0.875rem; font-weight:600;">
+    ✅ {{ session('success') }}
+</div>
+@endif
 </body>
 </html>

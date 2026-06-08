@@ -52,4 +52,32 @@ class PenelitianController extends Controller
             ->route('penelitian.index')
             ->with('success', 'Data penelitian berhasil ditambahkan.');
     }
+
+    public function edit($id)
+    {
+        $penelitian = Penelitian::findOrFail($id);
+        return view('penelitian.edit', compact('penelitian'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $penelitian = Penelitian::findOrFail($id);
+
+        $request->validate([
+            'judul'   => 'required|string|max:255',
+            'anggota' => 'required|string|max:255',
+            'tahun'   => 'required|integer|min:2000|max:2099',
+            'status'  => 'required|in:Aktif,Selesai',
+        ]);
+
+        $penelitian->update($request->only(['judul', 'anggota', 'tahun', 'status']));
+
+        return redirect()->route('dashboard')->with('success', 'Penelitian berhasil diperbarui.');
+    }
+
+    public function destroy($id)
+    {
+        Penelitian::findOrFail($id)->delete();
+        return redirect()->route('dashboard')->with('success', 'Penelitian berhasil dihapus.');
+    }
 }

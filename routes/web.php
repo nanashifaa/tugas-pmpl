@@ -19,6 +19,11 @@ Route::post('/logout',[LoginController::class,'logout'])->name('logout');
 Route::get('/dashboard',[DashboardController::class,'index'])->middleware('auth')->name('dashboard');
 
 // Penelitian CRUD
-Route::get('/penelitian', [PenelitianController::class, 'index'])->name('penelitian.index')->middleware('auth');
-Route::get('/penelitian/create', [PenelitianController::class, 'create'])->name('penelitian.create')->middleware('auth');
-Route::post('/penelitian', [PenelitianController::class, 'store'])->name('penelitian.store')->middleware('auth');
+Route::middleware('auth')->group(function () {
+    Route::get('/penelitian',              [PenelitianController::class, 'index'])->name('penelitian.index');
+    Route::get('/penelitian/create',       [PenelitianController::class, 'create'])->name('penelitian.create');
+    Route::post('/penelitian',             [PenelitianController::class, 'store'])->name('penelitian.store');
+    Route::get('/penelitian/{id}/edit',    [PenelitianController::class, 'edit'])->name('penelitian.edit');
+    Route::put('/penelitian/{id}',         [PenelitianController::class, 'update'])->name('penelitian.update');
+    Route::delete('/penelitian/{id}',      [PenelitianController::class, 'destroy'])->name('penelitian.destroy');
+});
